@@ -26,7 +26,7 @@ export function CommentForm({ postId }: { postId: string }) {
       <div className="flex gap-2">
         <input
           name="content"
-          className="flex-grow rounded-md border border-input px-3 py-2 text-sm"
+          className="grow rounded-md border border-input px-3 py-2 text-sm"
           placeholder="Ajouter un commentaire..."
           required
         />

@@ -46,11 +46,7 @@ export default async function BlogPage() {
             <Link href="/blog/nouveau">
               <Button>Publier un article</Button>
             </Link>
-          ) : (
-            <Link href="/login">
-              <Button variant="outline">Connectez-vous pour publier</Button>
-            </Link>
-          )}
+          ) : null}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
