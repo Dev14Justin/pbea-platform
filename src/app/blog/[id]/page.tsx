@@ -1,29 +1,18 @@
-import prisma from "@/lib/prisma";
+import { mockPosts } from "@/lib/mock-data";
 import { notFound } from "next/navigation";
-import { auth } from "@/auth";
 import { CommentForm } from "@/components/CommentForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
-export default async function BlogPostPage({ params }: { params: { id: string } }) {
-  const post = await prisma.post.findUnique({
-    where: { id: params.id },
-    include: {
-      author: { select: { name: true } },
-      comments: {
-        include: { author: { select: { name: true } } },
-        orderBy: { createdAt: "desc" },
-      },
-    },
-  });
+export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const post = mockPosts.find(p => p.id === id);
 
   if (!post) {
     notFound();
   }
-
-  const session = await auth();
 
   return (
     <div className="bg-gray-50 min-h-screen py-16">
@@ -49,19 +38,10 @@ export default async function BlogPostPage({ params }: { params: { id: string } 
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Commentaires ({post.comments.length})</h2>
           
-          {session ? (
              <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
-                <p className="text-sm font-medium mb-2">Connecté en tant que {session.user?.name}</p>
+                <p className="text-sm font-medium mb-2">Laissez un commentaire</p>
                 <CommentForm postId={post.id} />
              </div>
-          ) : (
-             <div className="bg-white p-6 rounded-lg shadow-sm mb-6 text-center">
-                <p className="text-gray-600 mb-4">Connectez-vous pour participer à la discussion.</p>
-                <Link href="/login">
-                   <Button variant="outline">Se connecter</Button>
-                </Link>
-             </div>
-          )}
 
           <div className="space-y-4">
             {post.comments.map((comment) => (

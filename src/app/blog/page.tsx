@@ -1,16 +1,10 @@
 import Link from "next/link";
-import prisma from "@/lib/prisma";
+import { mockPosts } from "@/lib/mock-data";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/auth";
 
 export default async function BlogPage() {
-  const session = await auth();
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    include: { author: { select: { name: true } } },
-    orderBy: { createdAt: "desc" },
-  });
+  const posts = mockPosts.filter(p => p.published).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
     <div className="bg-white min-h-screen py-16">
@@ -22,15 +16,10 @@ export default async function BlogPage() {
               Partagez vos expériences et découvrez celles des autres.
             </p>
           </div>
-          {session ? (
-            <Link href="/blog/nouveau">
-              <Button>Publier un article</Button>
-            </Link>
-          ) : (
-            <Link href="/login">
-               <Button variant="outline">Connectez-vous pour publier</Button>
-            </Link>
-          )}
+          {/* Always allow publishing in this demo version, or just link to the new post page */}
+          <Link href="/blog/nouveau">
+            <Button>Publier un article</Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

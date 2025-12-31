@@ -2,19 +2,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, BookOpen, Leaf, Users } from "lucide-react";
-import prisma from "@/lib/prisma";
-
-// Mocking prisma for now until lib/prisma is created, or actually I should create lib/prisma first.
-// But to speed up, I will inline the prisma client creation or just use mock data for the home page if I want to be safe,
-// but the plan said "fetched". I should create src/lib/prisma.ts first.
-// Since I can't interrupt this "overwrite_file", I will just use placeholders and then fix it.
-// Actually, I'll assume I'll create `src/lib/prisma.ts` in the next tool call before compiling.
-// Wait, I can't depend on a file I haven't created. I'll stick to static content for the Hero/Highlights and fetch data in a separate component or just create the lib file first.
-// I will create `src/lib/prisma.ts` right after this or better yet, I should have done it in step 2.
-// I will create a simple version now without DB fetching to avoid errors, and update it later or just creating the lib file immediately.
-// I'll create the file content here assuming `src/lib/prisma` exists. I'll create `src/lib/prisma.ts` immediately after.
+import { mockProducts } from "@/lib/mock-data";
 
 export default async function Home() {
+  const featuredProducts = mockProducts.slice(0, 3);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -41,7 +33,6 @@ export default async function Home() {
             </div>
           </div>
         </div>
-        {/* Decorative background pattern could go here */}
       </section>
 
       {/* Mission Section */}
@@ -96,7 +87,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Highlights (Static for now, dynamic later) */}
+      {/* Highlights */}
       <section className="py-16 bg-gray-50">
         <div className="container-custom">
            <div className="flex justify-between items-end mb-8">
@@ -110,38 +101,23 @@ export default async function Home() {
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Placeholder Content */}
-              <Card>
-                <div className="h-48 bg-gray-200 w-full object-cover rounded-t-lg flex items-center justify-center text-gray-400">
-                   Image Formation
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">Maîtriser la Culture du Maïs</CardTitle>
-                  <CardDescription>Formation Complète</CardDescription>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-sm text-gray-600 line-clamp-3">
-                     Une formation complète pour optimiser vos rendements de maïs avec des techniques modernes adaptées au Togo.
-                   </p>
-                   <p className="mt-4 font-bold text-primary">15 000 FCFA</p>
-                </CardContent>
-              </Card>
-
-               <Card>
-                <div className="h-48 bg-gray-200 w-full object-cover rounded-t-lg flex items-center justify-center text-gray-400">
-                   Image Guide
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">Guide des Engrais Bio</CardTitle>
-                  <CardDescription>Guide Pratique</CardDescription>
-                </CardHeader>
-                <CardContent>
-                   <p className="text-sm text-gray-600 line-clamp-3">
-                     Découvrez comment fabriquer et utiliser des engrais naturels pour réduire vos coûts.
-                   </p>
-                   <p className="mt-4 font-bold text-primary">5 000 FCFA</p>
-                </CardContent>
-              </Card>
+              {featuredProducts.map((product) => (
+                <Card key={product.id}>
+                  <div className="h-48 bg-gray-200 w-full object-cover rounded-t-lg flex items-center justify-center text-gray-400">
+                     {product.type === 'FORMATION' ? 'Formation' : 'Guide'}
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{product.title}</CardTitle>
+                    <CardDescription>{product.type}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                     <p className="text-sm text-gray-600 line-clamp-3">
+                       {product.description}
+                     </p>
+                     <p className="mt-4 font-bold text-primary">{product.price.toLocaleString("fr-FR")} FCFA</p>
+                  </CardContent>
+                </Card>
+              ))}
            </div>
             <div className="mt-8 text-center sm:hidden">
               <Link href="/ressources" className="inline-flex items-center text-primary hover:text-primary/80 font-medium">

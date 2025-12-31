@@ -1,11 +1,10 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { createComment } from "@/actions/blog";
 import { Button } from "@/components/ui/button";
 
-function SubmitCommentButton() {
-   const { pending } = useFormStatus();
+function SubmitCommentButton({ pending }: { pending: boolean }) {
    return (
       <Button size="sm" type="submit" disabled={pending}>
          {pending ? "..." : "Envoyer"}
@@ -14,7 +13,12 @@ function SubmitCommentButton() {
 }
 
 export function CommentForm({ postId }: { postId: string }) {
-  const [state, dispatch] = useFormState(createComment, { success: false, message: "" });
+  // Use useActionState instead of useFormState in newer React/Next versions if available,
+  // or fall back to useFormState. Since Next 16/React 19, useActionState is preferred.
+  // The original code used useFormState from react-dom, but let's stick to the previous pattern if it worked,
+  // or update to React 19 pattern if needed.
+  // However, `useFormState` is deprecated in React 19 for `useActionState`.
+  const [state, dispatch, isPending] = useActionState(createComment, { success: false, message: "" });
 
   return (
     <form action={dispatch} className="mt-4">
@@ -26,7 +30,7 @@ export function CommentForm({ postId }: { postId: string }) {
           placeholder="Ajouter un commentaire..."
           required
         />
-        <SubmitCommentButton />
+        <SubmitCommentButton pending={isPending} />
       </div>
       {state.message && <p className="text-xs text-gray-500 mt-1">{state.message}</p>}
     </form>
