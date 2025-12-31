@@ -20,5 +20,5 @@ export async function submitContactForm(prevState: any, formData: FormData) {
   // Pure frontend mode: log the message and return success
   console.log("Contact form submitted (Frontend Mode):", result.data);
   
-  return { success: true, message: "Message envoyé avec succès ! (Mode démo)" };
+  return { success: true, message: "Message envoyé avec succès !" };
 }
