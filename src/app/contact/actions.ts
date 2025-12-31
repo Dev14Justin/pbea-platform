@@ -8,9 +8,6 @@ const contactSchema = z.object({
 });
 
 export async function submitContactForm(prevState: any, formData: FormData) {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
   const email = formData.get("email");
   const message = formData.get("message");
 
@@ -20,8 +17,8 @@ export async function submitContactForm(prevState: any, formData: FormData) {
     return { success: false, errors: result.error.flatten().fieldErrors };
   }
 
-  // Logic to send email would go here. For now, we just simulate success.
-  console.log("Contact form submitted (Simulation):", { email: result.data.email, message: result.data.message });
-
-  return { success: true, message: "Message envoyé avec succès (Simulation) !" };
+  // Pure frontend mode: log the message and return success
+  console.log("Contact form submitted (Frontend Mode):", result.data);
+  
+  return { success: true, message: "Message envoyé avec succès ! (Mode démo)" };
 }

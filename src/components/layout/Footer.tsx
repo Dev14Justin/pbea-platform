@@ -7,14 +7,14 @@ export function Footer() {
         <div className="flex justify-center space-x-6 md:order-2">
            {/* Social links placeholders */}
         </div>
-        <div className="mt-8 md:mt-0 md:order-1">
+        <div className="mt-8 m-auto text-center md:mt-0 md:order-1">
           <p className="text-center text-base text-gray-400">
             &copy; {new Date().getFullYear()} Parlons Business en Agronomie. Tous droits réservés.
           </p>
-          <div className="mt-2 flex justify-center space-x-4 text-sm text-gray-500">
+          {/* <div className="mt-2 flex justify-center space-x-4 text-sm text-gray-500">
              <Link href="/mentions-legales" className="hover:text-gray-900">Mentions Légales</Link>
              <Link href="/confidentialite" className="hover:text-gray-900">Politique de Confidentialité</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

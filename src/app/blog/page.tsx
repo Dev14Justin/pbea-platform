@@ -1,25 +1,56 @@
 import Link from "next/link";
-import { mockPosts } from "@/lib/mock-data";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+const MOCK_POSTS = [
+  {
+    id: "1",
+    title: "Comment booster sa production de manioc",
+    content:
+      "Le manioc est une culture résiliente mais qui nécessite des soins spécifiques pour atteindre son plein potentiel de rendement...",
+    author: { name: "Jessica" },
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    title: "Le business de l'ananas au Togo",
+    content:
+      "L'exportation d'ananas est une opportunité croissante. Voici comment structurer votre exploitation pour l'export...",
+    author: { name: "Jean Kouassi" },
+    createdAt: new Date().toISOString(),
+  },
+];
 
 export default async function BlogPage() {
-  const posts = mockPosts.filter(p => p.published).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  const session = null as any; // Mock no session for now
+  const posts = MOCK_POSTS;
 
   return (
     <div className="bg-white min-h-screen py-16">
       <div className="container-custom">
         <div className="flex justify-between items-center mb-12">
           <div>
-            <h1 className="text-4xl font-extrabold text-gray-900">Le Blog Agricole</h1>
+            <h1 className="text-4xl font-extrabold text-gray-900">
+              Le Blog Agricole
+            </h1>
             <p className="mt-4 text-lg text-gray-500">
               Partagez vos expériences et découvrez celles des autres.
             </p>
           </div>
-          {/* Always allow publishing in this demo version, or just link to the new post page */}
-          <Link href="/blog/nouveau">
-            <Button>Publier un article</Button>
-          </Link>
+          {session ? (
+            <Link href="/blog/nouveau">
+              <Button>Publier un article</Button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <Button variant="outline">Connectez-vous pour publier</Button>
+            </Link>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -27,17 +58,25 @@ export default async function BlogPage() {
             <Card key={post.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle className="line-clamp-2">
-                   <Link href={`/blog/${post.id}`} className="hover:text-primary">
-                      {post.title}
-                   </Link>
+                  <Link
+                    href={`/blog/${post.id}`}
+                    className="hover:text-primary"
+                  >
+                    {post.title}
+                  </Link>
                 </CardTitle>
-                <p className="text-sm text-gray-500">Par {post.author.name || "Anonyme"}</p>
+                <p className="text-sm text-gray-500">
+                  Par {post.author.name || "Anonyme"}
+                </p>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 line-clamp-3">{post.content}</p>
               </CardContent>
               <CardFooter>
-                <Link href={`/blog/${post.id}`} className="text-primary font-medium hover:underline">
+                <Link
+                  href={`/blog/${post.id}`}
+                  className="text-primary font-medium hover:underline"
+                >
                   Lire la suite
                 </Link>
               </CardFooter>

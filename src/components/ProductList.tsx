@@ -1,5 +1,10 @@
-import { mockProducts } from "@/lib/mock-data";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Badge } from "@/components/ui/badge";
 
@@ -9,8 +14,51 @@ interface ProductListProps {
   description: string;
 }
 
-export async function ProductList({ type, title, description }: ProductListProps) {
-  const products = mockProducts.filter((p) => p.type === type);
+const MOCK_PRODUCTS = {
+  FORMATION: [
+    {
+      id: "1",
+      title: "Maîtriser la Culture du Maïs",
+      description:
+        "Une formation complète pour optimiser vos rendements de maïs avec des techniques modernes adaptées au Togo.",
+      price: 15000,
+      type: "FORMATION",
+    },
+    {
+      id: "2",
+      title: "Gestion Financière Agricole",
+      description:
+        "Apprenez à gérer les finances de votre exploitation pour assurer sa rentabilité à long terme.",
+      price: 25000,
+      type: "FORMATION",
+    },
+  ],
+  GUIDE: [
+    {
+      id: "3",
+      title: "Guide des Engrais Bio",
+      description:
+        "Découvrez comment fabriquer et utiliser des engrais naturels pour réduire vos coûts.",
+      price: 5000,
+      type: "GUIDE",
+    },
+    {
+      id: "4",
+      title: "Réussir son Élevage de Poulets",
+      description:
+        "Les bases essentielles pour lancer et réussir un élevage de poulets de chair au Togo.",
+      price: 7500,
+      type: "GUIDE",
+    },
+  ],
+};
+
+export async function ProductList({
+  type,
+  title,
+  description,
+}: ProductListProps) {
+  const products = MOCK_PRODUCTS[type as keyof typeof MOCK_PRODUCTS] || [];
 
   return (
     <div className="bg-gray-50 min-h-screen py-16">
@@ -29,25 +77,32 @@ export async function ProductList({ type, title, description }: ProductListProps
             {products.map((product) => (
               <Card key={product.id} className="flex flex-col">
                 <div className="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center text-gray-400">
-                   {/* Placeholder Image Logic could go here */}
-                   {type === 'FORMATION' ? 'Formation Image' : 'Guide Image'}
+                  {/* Placeholder Image Logic could go here */}
+                  {type === "FORMATION" ? "Formation Image" : "Guide Image"}
                 </div>
                 <CardHeader>
                   <div className="flex justify-between items-start">
-                    <CardTitle className="line-clamp-2 min-h-[3.5rem]">{product.title}</CardTitle>
+                    <CardTitle className="line-clamp-2 min-h-14">
+                      {product.title}
+                    </CardTitle>
                   </div>
-                    <Badge variant="secondary" className="w-fit mt-2">
-                       {type === 'FORMATION' ? 'Formation' : 'Guide / Ebook'}
-                    </Badge>
+                  <Badge variant="secondary" className="w-fit mt-2">
+                    {type === "FORMATION" ? "Formation" : "Guide / Ebook"}
+                  </Badge>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-gray-600 line-clamp-4">{product.description}</p>
+                <CardContent className="grow">
+                  <p className="text-gray-600 line-clamp-4">
+                    {product.description}
+                  </p>
                   <p className="mt-4 text-2xl font-bold text-primary">
                     {product.price.toLocaleString("fr-FR")} FCFA
                   </p>
                 </CardContent>
                 <CardFooter>
-                  <WhatsAppButton productTitle={product.title} price={product.price} />
+                  <WhatsAppButton
+                    productTitle={product.title}
+                    price={product.price}
+                  />
                 </CardFooter>
               </Card>
             ))}
