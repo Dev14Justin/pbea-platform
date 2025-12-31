@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { CommentForm } from "@/components/CommentForm";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 const MOCK_POSTS = [
@@ -37,8 +36,6 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const session = null as any; // Mock no session
-
   return (
     <div className="bg-gray-50 min-h-screen py-16">
       <div className="container-custom max-w-4xl">
@@ -72,23 +69,9 @@ export default async function BlogPostPage({
             Commentaires ({post.comments.length})
           </h2>
 
-          {session ? (
-            <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
-              <p className="text-sm font-medium mb-2">
-                Connecté en tant que {session.user?.name}
-              </p>
-              <CommentForm postId={post.id} />
-            </div>
-          ) : (
-            <div className="bg-white p-6 rounded-lg shadow-sm mb-6 text-center">
-              <p className="text-gray-600 mb-4">
-                Connectez-vous pour participer à la discussion.
-              </p>
-              <Link href="/login">
-                <Button variant="outline">Se connecter</Button>
-              </Link>
-            </div>
-          )}
+          <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
+            <CommentForm postId={post.id} />
+          </div>
 
           <div className="space-y-4">
             {post.comments.map((comment: any) => (
