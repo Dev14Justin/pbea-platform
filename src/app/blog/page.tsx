@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+
 const MOCK_POSTS = [
   {
     id: "1",
@@ -41,9 +41,6 @@ export default async function BlogPage() {
               Partagez vos expériences et découvrez celles des autres.
             </p>
           </div>
-          <Link href="/blog/nouveau">
-            <Button>Publier un article</Button>
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
