@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { createPost } from "@/actions/blog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,17 +13,16 @@ const initialState = {
   errors: null as any,
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+function SubmitButton({ pending }: { pending: boolean }) {
   return (
-    <Button type="submit" className="w-full" aria-disabled={pending}>
-      {pending ? "Envoi en cours..." : "Soumettre pour validation"}
+    <Button type="submit" className="w-full" aria-disabled={pending} disabled={pending}>
+      {pending ? "Envoi en cours..." : "Soumettre"}
     </Button>
   );
 }
 
 export default function NewPostPage() {
-  const [state, dispatch] = useFormState(createPost, initialState);
+  const [state, dispatch, isPending] = useActionState(createPost, initialState);
 
   if (state.success) {
     return (
@@ -70,7 +69,7 @@ export default function NewPostPage() {
                 <div className="text-red-500 text-sm">{state.message}</div>
               )}
 
-            <SubmitButton />
+            <SubmitButton pending={isPending} />
           </form>
         </CardContent>
       </Card>

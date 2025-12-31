@@ -1,6 +1,5 @@
 "use server";
 
-import prisma from "@/lib/prisma";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -9,6 +8,9 @@ const contactSchema = z.object({
 });
 
 export async function submitContactForm(prevState: any, formData: FormData) {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   const email = formData.get("email");
   const message = formData.get("message");
 
@@ -18,16 +20,8 @@ export async function submitContactForm(prevState: any, formData: FormData) {
     return { success: false, errors: result.error.flatten().fieldErrors };
   }
 
-  try {
-    await prisma.contactMessage.create({
-      data: {
-        email: result.data.email,
-        message: result.data.message,
-      },
-    });
-    return { success: true, message: "Message envoyé avec succès !" };
-  } catch (error) {
-    console.error("Error saving contact message:", error);
-    return { success: false, message: "Une erreur est survenue." };
-  }
+  // Logic to send email would go here. For now, we just simulate success.
+  console.log("Contact form submitted (Simulation):", { email: result.data.email, message: result.data.message });
+
+  return { success: true, message: "Message envoyé avec succès (Simulation) !" };
 }

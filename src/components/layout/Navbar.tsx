@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link"
-import { Menu, X, ShoppingCart, User } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -37,14 +36,7 @@ export function Navbar() {
               </Link>
             </div>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
-             <Link href="/login">
-                <Button variant="outline" size="sm" className="ml-3">
-                  <User className="h-4 w-4 mr-2" />
-                  Connexion
-                </Button>
-             </Link>
-          </div>
+          {/* Removed Login Button as requested by user ("No admin part, just frontend") */}
           <div className="-mr-2 flex items-center sm:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -78,11 +70,6 @@ export function Navbar() {
              <Link href="/contact" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
               Contact
             </Link>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-               <Link href="/login" className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                  Connexion
-               </Link>
-            </div>
           </div>
         </div>
       )}

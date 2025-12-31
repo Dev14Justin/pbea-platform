@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { mockProducts } from "@/lib/mock-data";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Badge } from "@/components/ui/badge";
 
@@ -10,14 +10,7 @@ interface ProductListProps {
 }
 
 export async function ProductList({ type, title, description }: ProductListProps) {
-  const products = await prisma.product.findMany({
-    where: {
-      type: type,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const products = mockProducts.filter((p) => p.type === type);
 
   return (
     <div className="bg-gray-50 min-h-screen py-16">

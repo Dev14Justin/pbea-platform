@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { submitContactForm } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,16 @@ const initialState = {
   errors: null as any,
 };
 
+function SubmitButton({ pending }: { pending: boolean }) {
+  return (
+    <Button type="submit" className="w-full" disabled={pending}>
+      {pending ? "Envoi..." : "Envoyer"}
+    </Button>
+  );
+}
+
 export default function ContactPage() {
-  const [state, formAction] = useFormState(submitContactForm, initialState);
+  const [state, formAction, isPending] = useActionState(submitContactForm, initialState);
 
   return (
     <div className="bg-gray-50 min-h-screen py-16">
@@ -105,9 +113,7 @@ export default function ContactPage() {
                      {state.errors?.message && <p className="text-red-500 text-sm mt-1">{state.errors.message}</p>}
                   </div>
 
-                  <Button type="submit" className="w-full">
-                    Envoyer
-                  </Button>
+                  <SubmitButton pending={isPending} />
                 </form>
               )}
             </CardContent>
