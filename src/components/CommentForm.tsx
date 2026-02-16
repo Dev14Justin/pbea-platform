@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { createComment } from "@/actions/blog";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +15,7 @@ function SubmitCommentButton() {
 }
 
 export function CommentForm({ postId }: { postId: string }) {
-  const [state, dispatch] = useFormState(createComment, {
+  const [state, dispatch] = useActionState(createComment, {
     success: false,
     message: "",
     errors: null,

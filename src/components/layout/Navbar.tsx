@@ -1,61 +1,52 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X, ShoppingCart, User } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+  { name: "Accueil", href: "/" },
+  { name: "À propos", href: "/a-propos" },
+  { name: "Formations", href: "/formations" },
+  { name: "Ressources", href: "/ressources" },
+  { name: "Blog", href: "/blog" },
+  { name: "Contact", href: "/contact" },
+];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex justify-center items-center">
+          <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-primary">PBEA</span>
             </Link>
           </div>
-          <div className="flex justify-center items-center">
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Accueil
-              </Link>
-              <Link
-                href="/a-propos"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                À propos
-              </Link>
-              <Link
-                href="/formations"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Formations
-              </Link>
-              <Link
-                href="/ressources"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Ressources
-              </Link>
-              <Link
-                href="/blog"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/contact"
-                className="border-transparent text-gray-500 hover:border-primary hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Contact
-              </Link>
-            </div>
+
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200",
+                    isActive
+                      ? "border-primary text-gray-900"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                  )}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </div>
 
           <div className="-mr-2 flex items-center sm:hidden">
@@ -74,45 +65,28 @@ export function Navbar() {
         </div>
       </div>
 
+      {/* Mobile menu */}
       {isOpen && (
-        <div className="sm:hidden">
+        <div className="sm:hidden bg-white border-b border-gray-200">
           <div className="pt-2 pb-3 space-y-1">
-            <Link
-              href="/"
-              className="bg-primary/10 border-primary text-primary block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Accueil
-            </Link>
-            <Link
-              href="/a-propos"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              À propos
-            </Link>
-            <Link
-              href="/formations"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Formations
-            </Link>
-            <Link
-              href="/ressources"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Ressources
-            </Link>
-            <Link
-              href="/blog"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Blog
-            </Link>
-            <Link
-              href="/contact"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-            >
-              Contact
-            </Link>
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "block pl-3 pr-4 py-2 border-l-4 text-base font-medium transition-colors duration-200",
+                    isActive
+                      ? "bg-primary/5 border-primary text-primary"
+                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
+                  )}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
