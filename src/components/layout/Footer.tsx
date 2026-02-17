@@ -23,7 +23,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Parlons Business en Agronomie. La plateforme leader au Togo pour
+              AgriBusiness-Lab. La plateforme leader au Togo pour
               transformer votre agriculture en une activité rentable et durable.
             </p>
             <div className="flex items-center gap-5 pt-2">

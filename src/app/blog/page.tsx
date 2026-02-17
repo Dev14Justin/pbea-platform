@@ -19,9 +19,6 @@ export default async function BlogPage() {
       {/* Hero Header */}
       <section className="relative py-20 lg:py-32 bg-primary overflow-hidden">
         <div className="container-custom relative z-10 text-center max-w-5xl mx-auto">
-          <Badge className="bg-white text-primary mb-6 text-sm font-bold uppercase tracking-widest px-4 py-1.5 hover:bg-white">
-            Journal AgriBusiness
-          </Badge>
           <h1 className="text-5xl font-black tracking-tighter text-white sm:text-7xl lg:text-8xl mb-8 leading-none">
             Intelligence Agricole
           </h1>
