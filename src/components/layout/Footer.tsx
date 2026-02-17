@@ -19,7 +19,7 @@ export function Footer() {
           <div className="flex flex-col space-y-6">
             <Link href="/" className="inline-block group">
               <span className="text-3xl font-black tracking-tighter text-primary group-hover:opacity-80 transition-opacity">
-                PBEA
+                AgriBusiness-Lab
               </span>
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
@@ -135,8 +135,16 @@ export function Footer() {
             réservés.
           </p>
           <div className="flex items-center gap-8">
-            <p className="text-xs text-gray-300 font-medium tracking-tight">
-              DESIGNED FOR IMPACT
+            <p className="text-xs text-gray-400 font-medium tracking-tight uppercase">
+              PROPULSÉ PAR{" "}
+              <a
+                href="https://p5sog.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors underline underline-offset-4"
+              >
+                P5SOG
+              </a>
             </p>
           </div>
         </div>

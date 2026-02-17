@@ -1,99 +1,111 @@
 import { notFound } from "next/navigation";
-import { CommentForm } from "@/components/CommentForm";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-
-const MOCK_POSTS = [
-  {
-    id: "1",
-    title: "Comment booster sa production de manioc",
-    content:
-      "Le manioc est une culture résiliente mais qui nécessite des soins spécifiques pour atteindre son plein potentiel de rendement...",
-    author: { name: "Jessica" },
-    createdAt: new Date().toISOString(),
-    comments: [],
-  },
-  {
-    id: "2",
-    title: "Le business de l'ananas au Togo",
-    content:
-      "L'exportation d'ananas est une opportunité croissante. Voici comment structurer votre exploitation pour l'export...",
-    author: { name: "Jean Kouassi" },
-    createdAt: new Date().toISOString(),
-    comments: [],
-  },
-];
+import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { MOCK_POSTS } from "@/constants/blog";
+import ReactMarkdown from "react-markdown";
 
 export default async function BlogPostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const post = MOCK_POSTS.find((p) => p.id === params.id);
+  const { id } = await params;
+  const post = MOCK_POSTS.find((p) => p.id === id);
 
   if (!post) {
     notFound();
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-16">
-      <div className="container-custom max-w-4xl">
-        <Link
-          href="/blog"
-          className="inline-flex items-center text-gray-500 hover:text-gray-900 mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Retour au blog
-        </Link>
+    <div className="bg-white min-h-screen pb-24">
+      {/* Article Header */}
+      <header className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 overflow-hidden bg-gray-50">
+        <div className="container-custom relative z-10">
+          <Link
+            href="/blog"
+            className="inline-flex items-center text-primary font-black uppercase tracking-widest text-xs mb-12 hover:gap-3 transition-all"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Retour au blog
+          </Link>
 
-        <article className="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
-          <div className="p-8">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
+          <div className="max-w-4xl">
+            <Badge className="bg-primary text-white mb-8 text-sm font-bold uppercase tracking-widest px-4 py-1.5 hover:bg-primary">
+              {post.category}
+            </Badge>
+            <h1 className="text-4xl font-black tracking-tighter text-gray-900 sm:text-6xl lg:text-7xl mb-10 leading-none">
               {post.title}
             </h1>
-            <div className="flex items-center text-gray-500 text-sm mb-8">
-              <span>Par {post.author.name || "Anonyme"}</span>
-              <span className="mx-2">•</span>
-              <span>
-                {new Date(post.createdAt).toLocaleDateString("fr-FR")}
-              </span>
+
+            <div className="flex flex-wrap items-center gap-8 py-8 border-y border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-black text-xl">
+                  {post.author.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-sm font-black text-gray-900 leading-none mb-1">
+                    {post.author.name}
+                  </p>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    {post.author.role}
+                  </p>
+                </div>
+              </div>
+              <div className="h-10 w-px bg-gray-200 hidden sm:block" />
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  {new Date(post.createdAt).toLocaleDateString("fr-FR", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
+                  <Clock className="w-4 h-4 text-primary" />
+                  {post.readTime} de lecture
+                </div>
+              </div>
             </div>
-            <div className="prose max-w-none text-gray-700 whitespace-pre-wrap">
-              {post.content}
-            </div>
           </div>
-        </article>
+        </div>
+      </header>
 
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Commentaires ({post.comments.length})
-          </h2>
-
-          <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
-            <CommentForm postId={post.id} />
-          </div>
-
-          <div className="space-y-4">
-            {post.comments.map((comment: any) => (
-              <Card key={comment.id}>
-                <CardHeader className="py-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold text-sm">
-                      {comment.author.name}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent className="py-3 pt-0 text-sm text-gray-700">
-                  {comment.content}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+      {/* Featured Image */}
+      <div className="container-custom -mt-12 lg:-mt-20 relative z-20">
+        <div className="aspect-21/9 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white bg-white">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
       </div>
+
+      {/* Article Content */}
+      <section className="py-20 lg:py-32">
+        <div className="container-custom max-w-4xl">
+          <div
+            className="prose prose-xl prose-slate max-w-none 
+            prose-headings:text-gray-900 prose-headings:font-black prose-headings:tracking-tight
+            prose-p:text-gray-600 prose-p:leading-relaxed prose-p:font-medium
+            prose-strong:text-gray-900 prose-strong:font-black
+            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+            prose-img:rounded-[2rem] prose-img:shadow-xl
+            prose-ul:list-disc prose-li:font-medium prose-li:text-gray-600
+            prose-blockquote:border-l-primary prose-blockquote:bg-gray-50 prose-blockquote:p-8 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:text-gray-700"
+          >
+            <ReactMarkdown>{post.content}</ReactMarkdown>
+          </div>
+
+          <div className="mt-20 pt-12 border-t border-gray-100 flex items-center justify-between">
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
